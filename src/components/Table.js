@@ -89,19 +89,6 @@ const headCells = [
     label: 'Message',
     width: "500px"
   },
-  // {
-  //   id: 'status',
-  //   numeric: false,
-  //   disablePadding: false,
-  //   label: 'Status',
-  // },
- 
-  // {
-  //   id: 'Action',
-  //   numeric: true,
-  //   disablePadding: false,
-  //   label: 'Action',
-  // },
 ];
 
 function EnhancedTableHead(props) {
@@ -129,8 +116,6 @@ function EnhancedTableHead(props) {
 }
 
 EnhancedTableHead.propTypes = {
-  numSelected: PropTypes.number.isRequired,
-  onSelectAllClick: PropTypes.func.isRequired,
   order: PropTypes.oneOf(['asc', 'desc']).isRequired,
   orderBy: PropTypes.string.isRequired,
   rowCount: PropTypes.number.isRequired,
@@ -316,7 +301,7 @@ const handleSendClicked = (data) => {
                       >
                         {row.name || 'N/A'}
                       </TableCell>
-                      <TableCell align="center">{row.date ? (new Date(row.date)).toLocaleDateString(): 'N/A'}</TableCell>
+                      <TableCell align="center">{!isNaN(row.date) ? (new Date(parseInt(row.date))).toLocaleString(): 'N/A'}</TableCell>
                       <TableCell align="center">{row.id}</TableCell>
                       <TableCell align="center">{row.address}</TableCell>
                       <TableCell align="center">
@@ -332,7 +317,7 @@ const handleSendClicked = (data) => {
                                     className='ma3 grow'
                                         size="small" variant="text"
                                         onClick={() => handleViewMoreClick(row)}>
-                                            viewmore
+                                            view more
                                         </Button>
                                         
                                     : <></>

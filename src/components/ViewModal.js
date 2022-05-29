@@ -30,17 +30,17 @@ export default function ViewModal({open, data, handleClose, handleOpen}) {
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Name: {data.name}
           </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+          <Typography  sx={{ mt: 2 }}>
            Date:{data.date}
           </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            To:{data.number}
+          <Typography sx={{ mt: 2 }}>
+            To:{data.id}
           </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-          From:{data.from}
+          <Typography sx={{ mt: 2 }}>
+          From:{data.address}
           </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-             Message:<br></br>{data.message}
+          <Typography sx={{ mt: 2, overflow: 'auto' }}>
+             Message:<br></br>{data.body}
           </Typography>
         </Box>
       </Modal>

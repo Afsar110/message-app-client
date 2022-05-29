@@ -63,15 +63,15 @@ function App() {
   }
 
   const searchClicked = () => {
-    const updateTableData = rows.filter(row => {
-      let found = false;
-      Object.keys(row).forEach(key=> {
-        if (typeof row[key] === 'string')
-        found = found || row[key].toLowerCase().includes(searchText.toLowerCase());
-      });
-      return found;
-    });
-    setTableData(updateTableData)
+    // const updateTableData = rows.filter(row => {
+    //   let found = false;
+    //   Object.keys(row).forEach(key=> {
+    //     if (typeof row[key] === 'string')
+    //     found = found || row[key].toLowerCase().includes(searchText.toLowerCase());
+    //   });
+    //   return found;
+    // });
+    // setTableData(updateTableData)
   }
   const handleLogin=async ({email, password})=>{
     const loginAction = await api.login(email,password);
@@ -79,7 +79,12 @@ function App() {
       setIsLoggedIn(true);
       api.bootstrap().then(res=> {
         if(res && res.status) {
-          setMRAction(res.data)
+          setMRAction({items:res.data.items, to: res.data.to});
+          if(res.data.messages) {
+            setTableData(res.data.messages);
+            setTableCount(res.data.count)
+            setShowTable(true);
+          }
         }
       });
     } else {
