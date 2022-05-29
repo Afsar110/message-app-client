@@ -112,25 +112,13 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              'aria-label': 'select all Names',
-            }}
-          />
-        </TableCell>
         {headCells.map((headCell) => (
           <TableCell
             width={headCell.width}
             key={headCell.id}
-            align={ headCell.id === 'Action' ? 'center' :'left'}
+            align={ headCell.id === 'message' ? 'left' :'center'}
             padding={headCell.disablePadding ? 'none' : 'normal'}
           >
-           
               {headCell.label}
            
           </TableCell>
@@ -297,7 +285,7 @@ const handleSendClicked = (data) => {
         <ActionModal open={isActionModlOpen} data={selectedData} handleOpen={()=> setIsActionModlOpen(true)} handleSendClicked={handleSendClicked} handleClose = {()=>  setIsActionModlOpen(false)}></ActionModal>
         <DeleteModal open={isDeleteModlOpen} handleDeleteConfirm={handleDeleteConfirm} handleClose = {()=>  setIsDeleteModlOpen(false)}></DeleteModal>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -305,59 +293,41 @@ const handleSendClicked = (data) => {
             size={'medium'}
           >
             <EnhancedTableHead
-              numSelected={selected.length}
               order={order}
               orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
               rowCount={data.length}
             />
             <TableBody>
-              {/* if you don't need to support IE11, you can replace the `stableSort` call with:
-                 data.slice().sort(getComparator(order, orderBy)) */}
               {data.sort(getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.id);
                   const labelId = `enhanced-table-checkbox-${index}`;
-
                   return (
                     <TableRow
                       hover
-                      role="checkbox"
-                      aria-checked={isItemSelected}
                       tabIndex={-1}
                       key={row.id}
-                      selected={isItemSelected}
                     >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                            onClick={(event ) => handleClick(event, row.id)}
-                          color="primary"
-                          checked={isItemSelected}
-                          inputProps={{
-                            'aria-labelledby': labelId,
-                          }}
-                        />
-                      </TableCell>
                       <TableCell
                         component="th"
                         id={labelId}
                         scope="row"
                         padding="none"
+                        align="center"
                       >
-                        {row.name}
+                        {row.name || 'N/A'}
                       </TableCell>
-                      <TableCell align="left">{row.date}</TableCell>
-                      <TableCell align="left">{row.number}</TableCell>
-                      <TableCell align="left">{row.from}</TableCell>
-                      <TableCell align="left">
+                      <TableCell align="center">{row.date ? (new Date(row.date)).toLocaleDateString(): 'N/A'}</TableCell>
+                      <TableCell align="center">{row.id}</TableCell>
+                      <TableCell align="center">{row.address}</TableCell>
+                      <TableCell align="center">
                         <Stack spacing={2} direction="row" className="justify-between">
                             {
-                            row.message.length > MAX_MESSAGE_SIZE
-                                ? row.message.slice(0, MAX_MESSAGE_SIZE) + "..."
-                                : row.message
+                            row.body.length > MAX_MESSAGE_SIZE
+                                ? row.body.slice(0, MAX_MESSAGE_SIZE) + "..."
+                                : row.body
                             }
                             {
-                                row.message.length > MAX_MESSAGE_SIZE
+                                row.body.length > MAX_MESSAGE_SIZE
                                     ? <Button
                                     className='ma3 grow'
                                         size="small" variant="text"
@@ -395,7 +365,7 @@ const handleSendClicked = (data) => {
         <TablePagination
           rowsPerPageOptions={[8, 10, 25]}
           component="div"
-          count={data.length}
+          count={props.count || 0}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

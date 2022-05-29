@@ -1,5 +1,6 @@
 
-const base = 'https://customer-support-messages.herokuapp.com'
+const base = process.env.NODE_ENV === "production" ? 'https://customer-support-messages.herokuapp.com' : 'http://localhost:3001';
+console.log(process.env.NODE_ENV)
 const login = async(username, password)=> {
     return fetch(base +"/login", {
         method: 'POST',

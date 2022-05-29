@@ -11,8 +11,10 @@ import MRActionModal from './components/MRActionModal';
 import api from './action/api';
 function App() {
   const [searchText, setSearchText] = useState("");
-  const [tableData, setTableData] = useState(rows);
+  const [tableData, setTableData] = useState([]);
+  const [tableCount, setTableCount] = useState(0);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showTable, setShowTable] = useState(false);
   const [isMRModalOpen, setIsMRModalOpen] = useState(false);
   const [MRAction, setMRAction] = useState({});
   const handleMasterAction = () => {
@@ -24,7 +26,12 @@ function App() {
         setIsLoggedIn(true);
         api.bootstrap().then(res=> {
           if(res && res.status) {
-            setMRAction(res.data)
+            setMRAction({items:res.data.items, to: res.data.to});
+            if(res.data.messages) {
+              setTableData(res.data.messages);
+              setTableCount(res.data.count)
+              setShowTable(true);
+            }
           }
         });
       }
@@ -56,7 +63,6 @@ function App() {
   }
 
   const searchClicked = () => {
-    console.log('searching', searchText);
     const updateTableData = rows.filter(row => {
       let found = false;
       Object.keys(row).forEach(key=> {
@@ -76,8 +82,9 @@ function App() {
           setMRAction(res.data)
         }
       });
+    } else {
+      alert(loginAction.message);
     }
-    // setIsLoggedIn(prev => !prev)
   }
   return (
     <div className="App tc">
@@ -95,7 +102,7 @@ function App() {
           <Button className='w-0.5 h-0.5 grow' size="small" variant="contained" color="error" onClick={handleLogout} >Logout</Button>
           </div>
         </Stack>
-      <Table data ={tableData} delete={handleDelete}/>
+      {showTable ? <Table data ={tableData} count={tableCount} delete={handleDelete}/> :<></>}
       </Stack>
       ): 
     <Loginpage login={handleLogin}/>

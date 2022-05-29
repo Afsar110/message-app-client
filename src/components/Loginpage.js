@@ -42,7 +42,6 @@ const Loginpage=({login})=>{
       };
       const tryLogin = () => {
         login(values)
-          console.log(values)
       }
 
     return(
