@@ -17,7 +17,7 @@ export default function Dropdown(props) {
           label="Select"
         >
           {items.map(item=> {
-            return ( <MenuItem value={item.value}>{item.message}</MenuItem>)
+            return ( <MenuItem key={item.value} value={item.value}>{item.message}</MenuItem>)
           })}
         </Select>
    </Box>

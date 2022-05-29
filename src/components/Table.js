@@ -89,19 +89,19 @@ const headCells = [
     label: 'Message',
     width: "500px"
   },
-  {
-    id: 'status',
-    numeric: false,
-    disablePadding: false,
-    label: 'Status',
-  },
+  // {
+  //   id: 'status',
+  //   numeric: false,
+  //   disablePadding: false,
+  //   label: 'Status',
+  // },
  
-  {
-    id: 'Action',
-    numeric: true,
-    disablePadding: false,
-    label: 'Action',
-  },
+  // {
+  //   id: 'Action',
+  //   numeric: true,
+  //   disablePadding: false,
+  //   label: 'Action',
+  // },
 ];
 
 function EnhancedTableHead(props) {
@@ -370,13 +370,13 @@ const handleSendClicked = (data) => {
                         </Stack>
                                   
                           </TableCell>
-                          <TableCell align="left">{row.status}</TableCell>
+                          {/* <TableCell align="left">{row.status}</TableCell>
                       <TableCell align="left">
                         <Stack  spacing={2} direction="row" className="justify-center ">
                             <Button className='w-0.5 h-0.5 grow' size="small" variant="contained" color="success" onClick={()=>handleActionClick(row)} style={{width: "50px"}}>Action</Button>
                             <Button className='w-0.5 h-0.5 grow' size="small" variant="contained" color="error" onClick={()=>handleDeleteClick(row)} style={{width: "50px"}}>Delete</Button>
                         </Stack>
-                      </TableCell>
+                      </TableCell> */}
                     </TableRow>
                   );
                 })}

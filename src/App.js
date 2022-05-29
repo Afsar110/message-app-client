@@ -1,4 +1,4 @@
-import React,{ useState} from 'react';
+import React,{ useState, useEffect} from 'react';
 import './App.css';
 import 'tachyons';
 import Table from './components/Table';
@@ -8,20 +8,41 @@ import Loginpage from './components/Loginpage';
 import { Button, Stack } from '@mui/material';
 import MessageIcon from '@mui/icons-material/Message';
 import MRActionModal from './components/MRActionModal';
-import { Rotate90DegreesCcw } from '@mui/icons-material';
+import api from './action/api';
 function App() {
   const [searchText, setSearchText] = useState("");
   const [tableData, setTableData] = useState(rows);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isMRModalOpen, setIsMRModalOpen] = useState(false);
+  const [MRAction, setMRAction] = useState({});
   const handleMasterAction = () => {
     setIsMRModalOpen(true)
   };
+  useEffect(()=>{
+    api.checklogin().then(response => {
+      if (response && response.status) {
+        setIsLoggedIn(true);
+        api.bootstrap().then(res=> {
+          if(res && res.status) {
+            setMRAction(res.data)
+          }
+        });
+      }
+    });
+  },[])
   const handleLogout = () => {
+    api.logout();
     setIsLoggedIn(false)
   };
-  const handleMRActionSend = () => {
-    setIsMRModalOpen(false)
+  const handleMRActionSend = async (data) => {
+    if(data.actionSelect || data.to) {
+      const resp = await api.updateMasterAction(data.actionSelect,data.to);
+      if(resp.status) {
+        setIsMRModalOpen(false);
+      } else {
+        alert(resp.message)
+      }
+    }
   }
   const handleDelete=(selectedRow)=> {
     if(Array.isArray(selectedRow)){
@@ -46,14 +67,23 @@ function App() {
     });
     setTableData(updateTableData)
   }
-  const handleLogin=()=>{
-    setIsLoggedIn(prev => !prev)
+  const handleLogin=async ({email, password})=>{
+    const loginAction = await api.login(email,password);
+    if (loginAction && loginAction.status) {
+      setIsLoggedIn(true);
+      api.bootstrap().then(res=> {
+        if(res && res.status) {
+          setMRAction(res.data)
+        }
+      });
+    }
+    // setIsLoggedIn(prev => !prev)
   }
   return (
     <div className="App tc">
       {isLoggedIn ? (
       <Stack spacing={2} direction="column" className="justify-center">
-        <MRActionModal open={isMRModalOpen} data={''} handleClose={()=> setIsMRModalOpen(false)} handleSendClicked={handleMRActionSend} />
+        <MRActionModal open={isMRModalOpen} data={MRAction} handleClose={()=> setIsMRModalOpen(false)} handleSendClicked={handleMRActionSend} />
         <Stack spacing={2} direction="row" className="justify-between">
           <div style={{ display: 'flex',alignItems: 'center' }}>
             <MessageIcon fontSize="large" />
