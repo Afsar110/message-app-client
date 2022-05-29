@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { Stack } from '@mui/material';
-import ActionDropdown from './ActionDropdown';
+import Dropdown from './Dropdown';
 import 'tachyons';
 import TextField from '@mui/material/TextField';
 
@@ -23,13 +23,16 @@ const style = {
   flexDirection: 'column',
 };
 
-export default function ActionModal({open, data, handleClose, handleSendClicked}) {
-  const [actionSelect, setActionSelect] = React.useState(1);
+export default function MRActionModal({open, data, handleClose, handleSendClicked}) {
+  const [MRactionSelect, setMRActionSelect] = React.useState(1);
   const [to, setTo] = React.useState("");
   const [toError, setToError] = React.useState(false);
 
-  const handleActionChange = (event) => {
-    setActionSelect(event.target.value);
+  React.useEffect(()=> {
+    setTo(data);
+  }, [data]);
+  const handleMRActionChange = (event) => {
+    setMRActionSelect(event.target.value);
   };
   const handleSend = () => {
     if(to.length < 10) {
@@ -38,7 +41,7 @@ export default function ActionModal({open, data, handleClose, handleSendClicked}
       return;
     }
     setToError(false)
-   handleSendClicked({actionSelect, to})
+   handleSendClicked({actionSelect: MRactionSelect, to})
   }
   return (
     <div>
@@ -50,10 +53,16 @@ export default function ActionModal({open, data, handleClose, handleSendClicked}
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Message Action!
+           Mester Message Action!
           </Typography>
          
-          <ActionDropdown  className="mb5" from= {data.from} number={data.number} handleActionChange={handleActionChange} actionSelect={actionSelect}/>
+          <Dropdown
+      actionSelect={MRactionSelect}
+      handleActionChange={handleMRActionChange}
+      items={[
+          {value: 1, message: 'Forward all message'},
+        ]}
+      />
           <TextField error={toError} type={'number'} value={to} sx={{'& input': {height:'50px'}}} onChange={event => setTo(event.target.value)} id="outlined-to" label="To" variant="outlined" size='medium' />
           <Stack  spacing={2} direction="row" className="justify-center mt3">
               <Button className='w-0.5 h-0.5 grow' size="small" variant="contained" color="success" onClick={handleSend} style={{width: "50px"}}>Send</Button>

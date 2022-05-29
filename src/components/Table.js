@@ -211,7 +211,7 @@ export default function EnhancedTable(props) {
   const [isDeleteModlOpen, setIsDeleteModlOpen] = React.useState(false);
   const [page, setPage] = React.useState(0);
 
-  const [rowsPerPage, setRowsPerPage] = React.useState(8);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   React.useEffect(()=> {
     setData(props.data);
@@ -229,6 +229,9 @@ export default function EnhancedTable(props) {
 
 const handleDeleteConfirm = () => {
     console.log(selectedData);
+    if(props.delete) {
+      props.delete(selectedData);
+    }
     setIsDeleteModlOpen(false);
 }
 
