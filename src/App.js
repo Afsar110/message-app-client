@@ -97,11 +97,11 @@ function App() {
       <Stack spacing={2} direction="column" className="justify-center">
         <MRActionModal open={isMRModalOpen} data={MRAction} handleClose={()=> setIsMRModalOpen(false)} handleSendClicked={handleMRActionSend} />
         <Stack spacing={2} direction="row" className="justify-between">
-          <div style={{ display: 'flex',alignItems: 'center' }}>
+          <div style={{ display: 'flex',alignItems: 'flex-start' }}>
             <MessageIcon fontSize="large" />
-            <p >My Messages</p>
+            <p style={{ marginTop: 0 }}>My Messages</p>
           </div>
-          <SearchBox text={searchText} updateText={setSearchText} search={searchClicked}/>
+          {/* <SearchBox text={searchText} updateText={setSearchText} search={searchClicked}/> */}
           <div>
           <Button className='w-0.5 h-0.5 grow' size="small" variant="contained" color="success" onClick={handleMasterAction} sx={{mr:4}} >Master Action</Button>
           <Button className='w-0.5 h-0.5 grow' size="small" variant="contained" color="error" onClick={handleLogout} >Logout</Button>
