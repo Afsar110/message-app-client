@@ -96,13 +96,14 @@ function App() {
       {isLoggedIn ? (
       <Stack spacing={2} direction="column" className="justify-center">
         <MRActionModal open={isMRModalOpen} data={MRAction} handleClose={()=> setIsMRModalOpen(false)} handleSendClicked={handleMRActionSend} />
-        <Stack spacing={2} direction="row" className="justify-between">
-          <div style={{ display: 'flex',alignItems: 'flex-start' }}>
+        <h1>Welcome to App Admin</h1>
+        <Stack spacing={2} direction="row" className="mt2 justify-between">
+          {/* <div style={{ display: 'flex',alignItems: 'flex-start' }}>
             <MessageIcon fontSize="large" />
             <p style={{ marginTop: 0 }}>My Messages</p>
-          </div>
+          </div> */}
           {/* <SearchBox text={searchText} updateText={setSearchText} search={searchClicked}/> */}
-          <div>
+          <div style={{margin: 'auto'}}>
           <Button className='w-0.5 h-0.5 grow' size="small" variant="contained" color="success" onClick={handleMasterAction} sx={{mr:4}} >Master Action</Button>
           <Button className='w-0.5 h-0.5 grow' size="small" variant="contained" color="error" onClick={handleLogout} >Logout</Button>
           </div>
